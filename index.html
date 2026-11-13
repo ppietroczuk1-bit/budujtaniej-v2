@@ -125,7 +125,12 @@ createUserWithEmailAndPassword,
 signInWithEmailAndPassword
 }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-
+import {
+getFirestore,
+doc,
+setDoc
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 const firebaseConfig = {
 apiKey: "AIzaSyCdYKfGbieiIbXPmvBG8XsKNXrhQdsmDZk",
 authDomain: "budujtaniej-48f81.firebaseapp.com",
@@ -137,6 +142,7 @@ appId: "1:1004917098674:web:712784a60d8d15d46661ab"
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 window.register = async function(){
 
@@ -148,10 +154,20 @@ document.getElementById("password").value;
 
 try{
 
+const userCredential =
 await createUserWithEmailAndPassword(
 auth,
 email,
 password
+);
+
+await setDoc(
+doc(db,"users",userCredential.user.uid),
+{
+email: email,
+rola: document.getElementById("rola").value,
+dataRejestracji: new Date().toISOString()
+}
 );
 
 document.getElementById("status").innerHTML =
