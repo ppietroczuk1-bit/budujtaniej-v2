@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BudujTaniej v2</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+margin:0;
+background:#f4f4f4;
+}
+
+header{
+background:#0f766e;
+color:white;
+text-align:center;
+padding:40px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:10px;
+box-sizing:border-box;
+}
+
+button{
+background:#0f766e;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:6px;
+cursor:pointer;
+}
+
+footer{
+background:#222;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:20px;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+<h1>BudujTaniej.pl v2</h1>
+<p>Nowa wersja portalu</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>Logowanie i rejestracja</h2>
+
+<input type="email" id="email" placeholder="Adres e-mail">
+
+<input type="password" id="password" placeholder="Hasło">
+
+<select id="rola">
+<option value="inwestor">Inwestor</option>
+<option value="wykonawca">Wykonawca</option>
+</select>
+
+<button>Zarejestruj</button>
+<button>Zaloguj</button>
+
+</div>
+
+</div>
+
+<footer>
+BudujTaniej.pl v2
+</footer>
+
+</body>
+</html>
