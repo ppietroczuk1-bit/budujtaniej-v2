@@ -89,6 +89,23 @@ padding:20px;
 <footer>
 BudujTaniej.pl v2
 </footer>
+<script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCdYKfGbieiIbXPmvBG8XsKNXrhQdsmDZk",
+  authDomain: "budujtaniej-48f81.firebaseapp.com",
+  projectId: "budujtaniej-48f81",
+  storageBucket: "budujtaniej-48f81.firebasestorage.app",
+  messagingSenderId: "1004917098674",
+  appId: "1:1004917098674:web:712784a60d8d15d46661ab"
+};
+
+initializeApp(firebaseConfig);
+
+console.log("Firebase działa");
+
+</script>
 </body>
 </html>
