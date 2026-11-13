@@ -47,6 +47,16 @@ border:none;
 padding:12px 20px;
 border-radius:6px;
 cursor:pointer;
+margin-right:10px;
+}
+
+button:hover{
+background:#0c5f59;
+}
+
+#status{
+margin-top:15px;
+font-weight:bold;
 }
 
 footer{
@@ -62,25 +72,39 @@ padding:20px;
 
 <header>
 <h1>BudujTaniej.pl v2</h1>
-<p>Nowa wersja portalu</p>
+<p>Rejestracja i logowanie użytkowników</p>
 </header>
 
 <div class="container">
 
 <div class="card">
+
 <h2>Logowanie i rejestracja</h2>
 
-<input type="email" placeholder="Adres e-mail">
+<input
+type="email"
+id="email"
+placeholder="Adres e‑mail">
 
-<input type="password" placeholder="Hasło">
+<input
+type="password"
+id="password"
+placeholder="Hasło">
 
-<select>
-<option>Inwestor</option>
-<option>Wykonawca</option>
+<select id="rola">
+<option value="inwestor">Inwestor</option>
+<option value="wykonawca">Wykonawca</option>
 </select>
 
-<button>Zarejestruj</button>
-<button>Zaloguj</button>
+<button onclick="register()">
+Zarejestruj
+</button>
+
+<button onclick="login()">
+Zaloguj
+</button>
+
+<div id="status"></div>
 
 </div>
 
@@ -89,23 +113,90 @@ padding:20px;
 <footer>
 BudujTaniej.pl v2
 </footer>
+
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCdYKfGbieiIbXPmvBG8XsKNXrhQdsmDZk",
-  authDomain: "budujtaniej-48f81.firebaseapp.com",
-  projectId: "budujtaniej-48f81",
-  storageBucket: "budujtaniej-48f81.firebasestorage.app",
-  messagingSenderId: "1004917098674",
-  appId: "1:1004917098674:web:712784a60d8d15d46661ab"
+apiKey: "AIzaSyCdYKfGbieiIbXPmvBG8XsKNXrhQdsmDZk",
+authDomain: "budujtaniej-48f81.firebaseapp.com",
+projectId: "budujtaniej-48f81",
+storageBucket: "budujtaniej-48f81.firebasestorage.app",
+messagingSenderId: "1004917098674",
+appId: "1:1004917098674:web:712784a60d8d15d46661ab"
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-console.log("Firebase działa");
+window.register = async function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+try{
+
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+document.getElementById("status").innerHTML =
+"✅ Rejestracja zakończona";
+
+}
+catch(error){
+
+document.getElementById("status").innerHTML =
+error.message;
+
+}
+
+}
+
+window.login = async function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+document.getElementById("status").innerHTML =
+"✅ Zalogowano";
+
+}
+catch(error){
+
+document.getElementById("status").innerHTML =
+error.message;
+
+}
+
+}
 
 </script>
+
 </body>
 </html>
