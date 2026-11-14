@@ -1,5 +1,5 @@
 import { auth } from "./firebase.js";
-
+console.log("AUTH:", auth);
 import {
 createUserWithEmailAndPassword,
 signInWithEmailAndPassword
