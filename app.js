@@ -16,10 +16,23 @@ const password = document.getElementById("password").value;
 
 try {
 
+const userCredential =
 await createUserWithEmailAndPassword(
-auth,
-email,
-password
+  auth,
+  email,
+  password
+);
+
+const rola =
+document.getElementById("rola").value;
+
+await setDoc(
+  doc(db, "users", userCredential.user.uid),
+  {
+    email: email,
+    rola: rola,
+    createdAt: new Date().toISOString()
+  }
 );
 
 status.innerHTML = "✅ Konto utworzone";
