@@ -4,7 +4,8 @@ import {
   doc,
   setDoc,
   collection,
-  addDoc
+  addDoc,
+  getDocs
 } from "./firebase.js";
 
 import {
@@ -14,25 +15,38 @@ import {
 
 console.log("AUTH:", auth);
 
+// ====================
+// LOGOWANIE / KONTO
+// ====================
+
 const registerBtn =
 document.getElementById("registerBtn");
 
 const loginBtn =
 document.getElementById("loginBtn");
 
-const addTenderBtn =
-document.getElementById("addTenderBtn");
-
 const status =
 document.getElementById("status");
+
+// ====================
+// PRZETARGI
+// ====================
+
+const addTenderBtn =
+document.getElementById("addTenderBtn");
 
 const tenderStatus =
 document.getElementById("tenderStatus");
 
+const tendersList =
+document.getElementById("tendersList");
 
-// ======================
+const filterWojewodztwo =
+document.getElementById("filterWojewodztwo");
+
+// ====================
 // REJESTRACJA
-// ======================
+// ====================
 
 registerBtn.addEventListener("click", async () => {
 
@@ -48,11 +62,11 @@ registerBtn.addEventListener("click", async () => {
   try {
 
     const userCredential =
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
     await setDoc(
       doc(
@@ -87,10 +101,9 @@ registerBtn.addEventListener("click", async () => {
 
 });
 
-
-// ======================
+// ====================
 // LOGOWANIE
-// ======================
+// ====================
 
 loginBtn.addEventListener("click", async () => {
 
@@ -123,12 +136,15 @@ loginBtn.addEventListener("click", async () => {
 
 });
 
+// ====================
+// DODANIE PRZETARGU
+// ====================
 
-// ======================
-// DODAJ PRZETARG
-// ======================
+if(addTenderBtn){
 
-addTenderBtn.addEventListener("click", async () => {
+addTenderBtn.addEventListener(
+"click",
+async () => {
 
   const kategoria =
   document.getElementById("kategoria").value;
@@ -151,7 +167,10 @@ addTenderBtn.addEventListener("click", async () => {
   try {
 
     await addDoc(
-      collection(db, "tenders"),
+      collection(
+        db,
+        "tenders"
+      ),
       {
         kategoria: kategoria,
         wojewodztwo: wojewodztwo,
@@ -173,6 +192,8 @@ addTenderBtn.addEventListener("click", async () => {
       "PRZETARG DODANY"
     );
 
+    loadTenders();
+
   }
   catch(error){
 
@@ -184,3 +205,97 @@ addTenderBtn.addEventListener("click", async () => {
   }
 
 });
+
+}
+
+// ====================
+// LISTA PRZETARGÓW
+// ====================
+
+async function loadTenders() {
+
+  if(!tendersList) return;
+
+  tendersList.innerHTML = "";
+
+  const snapshot =
+  await getDocs(
+    collection(db, "tenders")
+  );
+
+  snapshot.forEach((item) => {
+
+    const tender =
+    item.data();
+
+    if(
+      filterWojewodztwo &&
+      filterWojewodztwo.value !== "" &&
+      tender.wojewodztwo !==
+      filterWojewodztwo.value
+    ){
+      return;
+    }
+
+    const card =
+    document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${tender.kategoria}</h3>
+
+      <p>
+      Województwo:
+      ${tender.wojewodztwo}
+      </p>
+
+      <p>
+      Powiat:
+      ${tender.powiat}
+      </p>
+
+      <p>
+      Budżet:
+      ${tender.budzet} zł
+      </p>
+
+      <p>
+      Termin:
+      ${tender.termin}
+      </p>
+
+      <p>
+      ${tender.opis}
+      </p>
+
+      <p>
+      Status:
+      ${tender.status}
+      </p>
+    `;
+
+    tendersList.appendChild(card);
+
+  });
+
+}
+
+// ====================
+// FILTR WOJEWÓDZTW
+// ====================
+
+if(filterWojewodztwo){
+
+filterWojewodztwo.addEventListener(
+  "change",
+  loadTenders
+);
+
+}
+
+// ====================
+// START
+// ====================
+
+loadTenders();
