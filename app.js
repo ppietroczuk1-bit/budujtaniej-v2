@@ -1,4 +1,11 @@
-import { auth, db, doc, setDoc } from "./firebase.js";
+import {
+  auth,
+  db,
+  doc,
+  setDoc,
+  collection,
+  addDoc
+} from "./firebase.js";
 
 import {
   createUserWithEmailAndPassword,
@@ -7,27 +14,52 @@ import {
 
 console.log("AUTH:", auth);
 
-const registerBtn = document.getElementById("registerBtn");
-const loginBtn = document.getElementById("loginBtn");
-const status = document.getElementById("status");
+const registerBtn =
+document.getElementById("registerBtn");
+
+const loginBtn =
+document.getElementById("loginBtn");
+
+const addTenderBtn =
+document.getElementById("addTenderBtn");
+
+const status =
+document.getElementById("status");
+
+const tenderStatus =
+document.getElementById("tenderStatus");
+
+
+// ======================
+// REJESTRACJA
+// ======================
 
 registerBtn.addEventListener("click", async () => {
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const rola = document.getElementById("rola").value;
+  const email =
+  document.getElementById("email").value;
+
+  const password =
+  document.getElementById("password").value;
+
+  const rola =
+  document.getElementById("rola").value;
 
   try {
 
     const userCredential =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
     await setDoc(
-      doc(db, "users", userCredential.user.uid),
+      doc(
+        db,
+        "users",
+        userCredential.user.uid
+      ),
       {
         email: email,
         rola: rola,
@@ -40,22 +72,33 @@ registerBtn.addEventListener("click", async () => {
       userCredential.user.uid
     );
 
-    status.innerHTML = "✅ Konto utworzone";
+    status.innerHTML =
+    "✅ Konto utworzone";
 
-  } catch (error) {
+  }
+  catch(error){
 
-    console.error("BŁĄD:", error);
+    console.error(error);
 
-    status.innerHTML = error.message;
+    status.innerHTML =
+    error.message;
 
   }
 
 });
 
+
+// ======================
+// LOGOWANIE
+// ======================
+
 loginBtn.addEventListener("click", async () => {
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email =
+  document.getElementById("email").value;
+
+  const password =
+  document.getElementById("password").value;
 
   try {
 
@@ -65,13 +108,78 @@ loginBtn.addEventListener("click", async () => {
       password
     );
 
-    status.innerHTML = "✅ Zalogowano";
+    status.innerHTML =
+    "✅ Zalogowano";
 
-  } catch (error) {
+  }
+  catch(error){
 
     console.error(error);
 
-    status.innerHTML = error.message;
+    status.innerHTML =
+    error.message;
+
+  }
+
+});
+
+
+// ======================
+// DODAJ PRZETARG
+// ======================
+
+addTenderBtn.addEventListener("click", async () => {
+
+  const kategoria =
+  document.getElementById("kategoria").value;
+
+  const wojewodztwo =
+  document.getElementById("wojewodztwo").value;
+
+  const powiat =
+  document.getElementById("powiat").value;
+
+  const budzet =
+  document.getElementById("budzet").value;
+
+  const termin =
+  document.getElementById("termin").value;
+
+  const opis =
+  document.getElementById("opis").value;
+
+  try {
+
+    await addDoc(
+      collection(db, "tenders"),
+      {
+        kategoria: kategoria,
+        wojewodztwo: wojewodztwo,
+        powiat: powiat,
+        budzet: Number(budzet),
+        termin: termin,
+        opis: opis,
+        status: "aktywny",
+        czasPrzetargu: 30,
+        createdAt:
+        new Date().toISOString()
+      }
+    );
+
+    tenderStatus.innerHTML =
+    "✅ Przetarg dodany";
+
+    console.log(
+      "PRZETARG DODANY"
+    );
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    tenderStatus.innerHTML =
+    error.message;
 
   }
 
