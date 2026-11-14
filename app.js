@@ -15,18 +15,16 @@ registerBtn.addEventListener("click", async () => {
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const rola = document.getElementById("rola").value;
 
   try {
 
     const userCredential =
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    const rola =
-    document.getElementById("rola").value;
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
     await setDoc(
       doc(db, "users", userCredential.user.uid),
@@ -44,8 +42,7 @@ registerBtn.addEventListener("click", async () => {
 
     status.innerHTML = "✅ Konto utworzone";
 
-  }
-  catch(error){
+  } catch (error) {
 
     console.error("BŁĄD:", error);
 
@@ -70,8 +67,7 @@ loginBtn.addEventListener("click", async () => {
 
     status.innerHTML = "✅ Zalogowano";
 
-  }
-  catch(error){
+  } catch (error) {
 
     console.error(error);
 
