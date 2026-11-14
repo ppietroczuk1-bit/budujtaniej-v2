@@ -15,28 +15,16 @@ import {
 
 console.log("AUTH:", auth);
 
-// =====================
-// KONTO
-// =====================
+// ===========================
+// ELEMENTY
+// ===========================
 
-const registerBtn =
-document.getElementById("registerBtn");
+const registerBtn = document.getElementById("registerBtn");
+const loginBtn = document.getElementById("loginBtn");
+const status = document.getElementById("status");
 
-const loginBtn =
-document.getElementById("loginBtn");
-
-const status =
-document.getElementById("status");
-
-// =====================
-// PRZETARGI
-// =====================
-
-const addTenderBtn =
-document.getElementById("addTenderBtn");
-
-const tenderStatus =
-document.getElementById("tenderStatus");
+const addTenderBtn = document.getElementById("addTenderBtn");
+const tenderStatus = document.getElementById("tenderStatus");
 
 const tendersList =
 document.getElementById("tendersList");
@@ -44,21 +32,20 @@ document.getElementById("tendersList");
 const filterWojewodztwo =
 document.getElementById("filterWojewodztwo");
 
-// =====================
-// OFERTY
-// =====================
-
 const addOfferBtn =
 document.getElementById("addOfferBtn");
 
 const offerStatus =
 document.getElementById("offerStatus");
 
-// =====================
-// REJESTRACJA
-// =====================
+const myTenders =
+document.getElementById("myTenders");
 
-if(registerBtn){
+// ===========================
+// REJESTRACJA
+// ===========================
+
+if (registerBtn) {
 
 registerBtn.addEventListener(
 "click",
@@ -76,11 +63,11 @@ async () => {
   try {
 
     const userCredential =
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
     await setDoc(
       doc(
@@ -96,13 +83,13 @@ async () => {
       }
     );
 
+    status.innerHTML =
+      "✅ Konto utworzone";
+
     console.log(
-      "USER ZAPISANY W FIRESTORE",
+      "USER ZAPISANY",
       userCredential.user.uid
     );
-
-    status.innerHTML =
-    "✅ Konto utworzone";
 
   }
   catch(error){
@@ -110,7 +97,7 @@ async () => {
     console.error(error);
 
     status.innerHTML =
-    error.message;
+      error.message;
 
   }
 
@@ -118,11 +105,11 @@ async () => {
 
 }
 
-// =====================
+// ===========================
 // LOGOWANIE
-// =====================
+// ===========================
 
-if(loginBtn){
+if (loginBtn) {
 
 loginBtn.addEventListener(
 "click",
@@ -143,7 +130,9 @@ async () => {
     );
 
     status.innerHTML =
-    "✅ Zalogowano";
+      "✅ Zalogowano";
+
+    loadMyTenders();
 
   }
   catch(error){
@@ -151,7 +140,7 @@ async () => {
     console.error(error);
 
     status.innerHTML =
-    error.message;
+      error.message;
 
   }
 
@@ -159,15 +148,23 @@ async () => {
 
 }
 
-// =====================
-// DODAWANIE PRZETARGU
-// =====================
+// ===========================
+// DODAJ PRZETARG
+// ===========================
 
 if(addTenderBtn){
 
 addTenderBtn.addEventListener(
 "click",
 async () => {
+
+  if(!auth.currentUser){
+
+    tenderStatus.innerHTML =
+    "Najpierw się zaloguj";
+
+    return;
+  }
 
   const kategoria =
   document.getElementById("kategoria").value;
@@ -190,202 +187,19 @@ async () => {
   try {
 
     await addDoc(
-      collection(
-        db,
-        "tenders"
-      ),
+      collection(db,"tenders"),
       {
-        kategoria: kategoria,
-        wojewodztwo: wojewodztwo,
-        powiat: powiat,
-        budzet: Number(budzet),
-        termin: termin,
-        opis: opis,
-        status: "aktywny",
-        czasPrzetargu: 30,
-        createdAt:
-        new Date().toISOString()
-      }
-    );
+        ownerUid:
+        auth.currentUser.uid,
 
-    tenderStatus.innerHTML =
-    "✅ Przetarg dodany";
+        ownerEmail:
+        auth.currentUser.email,
 
-    loadTenders();
+        kategoria:
+        kategoria,
 
-  }
-  catch(error){
+        wojewodztwo:
+        wojewodztwo,
 
-    console.error(error);
-
-    tenderStatus.innerHTML =
-    error.message;
-
-  }
-
-});
-
-}
-
-// =====================
-// LISTA PRZETARGÓW
-// =====================
-
-async function loadTenders(){
-
-  if(!tendersList) return;
-
-  tendersList.innerHTML = "";
-
-  const snapshot =
-  await getDocs(
-    collection(db,"tenders")
-  );
-
-  snapshot.forEach((item) => {
-
-    const tender =
-    item.data();
-
-    const tenderId =
-    item.id;
-
-    if(
-      filterWojewodztwo &&
-      filterWojewodztwo.value !== "" &&
-      tender.wojewodztwo !==
-      filterWojewodztwo.value
-    ){
-      return;
-    }
-
-    const card =
-    document.createElement("div");
-
-    card.className = "card";
-
-    card.innerHTML = `
-
-      <h3>${tender.kategoria}</h3>
-
-      <p>
-      Województwo:
-      ${tender.wojewodztwo}
-      </p>
-
-      <p>
-      Powiat:
-      ${tender.powiat}
-      </p>
-
-      <p>
-      Budżet:
-      ${tender.budzet} zł
-      </p>
-
-      <p>
-      Termin:
-      ${tender.termin}
-      </p>
-
-      <p>
-      ${tender.opis}
-      </p>
-
-      <p>
-      Status:
-      ${tender.status}
-      </p>
-
-      <p>
-      ID:
-      ${tenderId}
-      </p>
-
-    `;
-
-    tendersList.appendChild(card);
-
-  });
-
-}
-
-// =====================
-// FILTR WOJEWÓDZTW
-// =====================
-
-if(filterWojewodztwo){
-
-filterWojewodztwo.addEventListener(
-  "change",
-  loadTenders
-);
-
-}
-
-// =====================
-// DODAWANIE OFERTY
-// =====================
-
-if(addOfferBtn){
-
-addOfferBtn.addEventListener(
-"click",
-async () => {
-
-  const tenderId =
-  document.getElementById(
-    "offerTenderId"
-  ).value;
-
-  const cena =
-  document.getElementById(
-    "offerPrice"
-  ).value;
-
-  const termin =
-  document.getElementById(
-    "offerTermin"
-  ).value;
-
-  const opis =
-  document.getElementById(
-    "offerOpis"
-  ).value;
-
-  try {
-
-    await addDoc(
-      collection(db,"offers"),
-      {
-        tenderId: tenderId,
-        cena: Number(cena),
-        termin: termin,
-        opis: opis,
-        createdAt:
-        new Date().toISOString()
-      }
-    );
-
-    offerStatus.innerHTML =
-    "✅ Oferta zapisana";
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    offerStatus.innerHTML =
-    error.message;
-
-  }
-
-});
-
-}
-
-// =====================
-// START
-// =====================
-
-loadTenders();
+        powiat:
+     
