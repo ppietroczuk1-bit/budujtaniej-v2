@@ -359,4 +359,133 @@ async function loadMyTenders() {
 
   const tendersSnapshot =
   await getDocs(
-    collection(
+    collection(db, "tenders")
+  );
+
+  const offersSnapshot =
+  await getDocs(
+    collection(db, "offers")
+  );
+
+  tendersSnapshot.forEach((item) => {
+
+    const tender = item.data();
+
+    if (
+      tender.ownerUid !==
+      auth.currentUser.uid
+    ) {
+      return;
+    }
+
+    let offersCount = 0;
+
+    offersSnapshot.forEach((offerItem) => {
+
+      const offer = offerItem.data();
+
+      if (
+        offer.tenderId === item.id
+      ) {
+        offersCount++;
+      }
+
+    });
+
+    const card =
+    document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${tender.kategoria}</h3>
+
+      <p>Budżet: ${tender.budzet} zł</p>
+
+      <p>Status: ${tender.status}</p>
+
+      <p>Liczba ofert: ${offersCount}</p>
+
+      <button class="btn showOffersBtn">
+        Pokaż oferty
+      </button>
+
+      <div id="offers-${item.id}"></div>
+    `;
+
+    myTenders.appendChild(card);
+
+    const showBtn =
+    card.querySelector(".showOffersBtn");
+
+    showBtn.addEventListener(
+      "click",
+      () => {
+
+        const offersContainer =
+        document.getElementById(
+          `offers-${item.id}`
+        );
+
+        offersContainer.innerHTML = "";
+
+        offersSnapshot.forEach(
+          (offerItem) => {
+
+            const offer =
+            offerItem.data();
+
+            if (
+              offer.tenderId !== item.id
+            ) {
+              return;
+            }
+
+            const offerCard =
+            document.createElement("div");
+
+            offerCard.className =
+            "offer-card";
+
+            offerCard.innerHTML = `
+              <h4>Oferta wykonawcy</h4>
+
+              <p>Cena: ${offer.cena} zł</p>
+
+              <p>Termin: ${offer.termin}</p>
+
+              <p>${offer.opis}</p>
+            `;
+
+            offersContainer.appendChild(
+              offerCard
+            );
+
+          }
+        );
+
+      }
+    );
+
+  });
+
+}
+
+// =======================
+// FILTR
+// =======================
+
+if (filterWojewodztwo) {
+
+  filterWojewodztwo.addEventListener(
+    "change",
+    loadTenders
+  );
+
+}
+
+// =======================
+// START
+// =======================
+
+loadTenders();
