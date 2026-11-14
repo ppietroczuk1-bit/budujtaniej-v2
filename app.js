@@ -40,6 +40,12 @@ status.innerHTML = "✅ Konto utworzone";
 }
 catch(error){
 
+console.error("BŁĄD:", error);
+
+status.innerHTML = error.message;
+
+}
+
 console.error(error);
 status.innerHTML = error.message;
 
