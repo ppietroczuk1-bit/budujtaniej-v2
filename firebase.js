@@ -8,7 +8,7 @@ import { getFirestore }
 from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAdK0dNJWuFwHjd2ouaHXr05o_hMM41Uvs",
+  apiKey: "AIzaSyAdKOdNJWuFwHjd2ouaHXrO5o_hMM41Uvs",
   authDomain: "budujtaniej-v2.firebaseapp.com",
   projectId: "budujtaniej-v2",
   storageBucket: "budujtaniej-v2.firebasestorage.app",
