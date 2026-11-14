@@ -3,195 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BudujTaniej.pl - Przetargi Budowlane</title>
+
+<title>BudujTaniej.pl</title>
+
 <link rel="stylesheet" href="style.css">
-<style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-font-family:Arial, sans-serif;
-background:#f5f7fa;
-color:#333;
-line-height:1.6;
-}
-
-header{
-background:#0f766e;
-color:white;
-padding:20px 40px;
-position:sticky;
-top:0;
-z-index:100;
-}
-
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-max-width:1200px;
-margin:auto;
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-}
-
-.menu a{
-color:white;
-text-decoration:none;
-margin-left:25px;
-font-weight:bold;
-}
-
-.hero{
-background:linear-gradient(135deg,#0f766e,#14b8a6);
-color:white;
-padding:90px 20px;
-text-align:center;
-}
-
-.hero h1{
-font-size:52px;
-margin-bottom:20px;
-}
-
-.hero p{
-font-size:22px;
-max-width:900px;
-margin:auto;
-margin-bottom:35px;
-}
-
-.btn{
-display:inline-block;
-padding:15px 30px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-margin:10px;
-}
-
-.btn-primary{
-background:white;
-color:#0f766e;
-}
-
-.btn-secondary{
-border:2px solid white;
-color:white;
-}
-
-.section{
-padding:70px 20px;
-max-width:1200px;
-margin:auto;
-}
-
-.section-title{
-text-align:center;
-font-size:36px;
-margin-bottom:50px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.card{
-background:white;
-padding:25px;
-border-radius:12px;
-box-shadow:0 3px 15px rgba(0,0,0,.1);
-}
-
-.card h3{
-margin-bottom:10px;
-color:#0f766e;
-}
-
-.steps{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.step{
-background:white;
-padding:25px;
-border-radius:12px;
-box-shadow:0 2px 12px rgba(0,0,0,.08);
-text-align:center;
-}
-
-.step-number{
-width:60px;
-height:60px;
-background:#0f766e;
-color:white;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:24px;
-margin:auto;
-margin-bottom:15px;
-}
-
-.pricing{
-background:#0f766e;
-color:white;
-text-align:center;
-padding:60px 20px;
-border-radius:15px;
-}
-
-.price{
-font-size:60px;
-font-weight:bold;
-}
-
-.offer-card{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-}
-
-.badge{
-display:inline-block;
-background:#16a34a;
-color:white;
-padding:5px 10px;
-border-radius:6px;
-font-size:13px;
-margin-bottom:10px;
-}
-
-footer{
-background:#111827;
-color:white;
-padding:40px;
-text-align:center;
-margin-top:50px;
-}
-
-ul{
-padding-left:20px;
-}
-
-li{
-margin-bottom:8px;
-}
-
-</style>
 </head>
 
 <body>
@@ -225,7 +41,7 @@ Znajdź najlepszą firmę budowlaną
 
 <p>
 Dodaj przetarg za darmo, zbieraj oferty przez 30 dni
-i wybierz najlepszą firmę bez ujawniania swoich danych.
+i wybierz najlepszą firmę.
 </p>
 
 <a href="#" class="btn btn-primary">
@@ -237,6 +53,7 @@ i wybierz najlepszą firmę bez ujawniania swoich danych.
 </a>
 
 </section>
+
 <section class="section">
 
 <h2 class="section-title">
@@ -245,21 +62,35 @@ Załóż konto
 
 <div class="card">
 
-<input type="email" id="email" placeholder="Adres e-mail">
+<input
+type="email"
+id="email"
+placeholder="Adres e-mail">
 
-<input type="password" id="password" placeholder="Hasło">
+<input
+type="password"
+id="password"
+placeholder="Hasło">
 
 <select id="rola">
 <option value="inwestor">Inwestor</option>
 <option value="wykonawca">Wykonawca</option>
 </select>
 
-<button class="btn" id="registerBtn">
+<button
+class="btn"
+id="registerBtn">
+
 Zarejestruj się
+
 </button>
 
-<button class="btn" id="loginBtn">
+<button
+class="btn"
+id="loginBtn">
+
 Zaloguj się
+
 </button>
 
 <p id="status"></p>
@@ -267,6 +98,60 @@ Zaloguj się
 </div>
 
 </section>
+
+<section class="section">
+
+<h2 class="section-title">
+Dodaj przetarg
+</h2>
+
+<div class="card">
+
+<input
+type="text"
+id="kategoria"
+placeholder="Kategoria prac">
+
+<input
+type="text"
+id="wojewodztwo"
+placeholder="Województwo">
+
+<input
+type="text"
+id="powiat"
+placeholder="Powiat">
+
+<input
+type="number"
+id="budzet"
+placeholder="Budżet">
+
+<input
+type="date"
+id="termin">
+
+<textarea
+id="opis"
+placeholder="Opis prac"
+style="width:100%;height:120px;"></textarea>
+
+<br><br>
+
+<button
+class="btn"
+id="addTenderBtn">
+
+Dodaj przetarg
+
+</button>
+
+<p id="tenderStatus"></p>
+
+</div>
+
+</section>
+
 <section class="section">
 
 <h2 class="section-title">
@@ -279,7 +164,7 @@ Jak działa BudujTaniej?
 <div class="step-number">1</div>
 <h3>Dodaj przetarg</h3>
 <p>
-Opisz inwestycję, dodaj zdjęcia i dokumentację PDF.
+Dodaj opis, zdjęcia i dokumentację.
 </p>
 </div>
 
@@ -303,161 +188,6 @@ Po zakończeniu przetargu wybierasz najlepszą ofertę.
 
 </section>
 
-<section class="section">
-
-<h2 class="section-title">
-Kategorie prac
-</h2>
-
-<div class="grid">
-
-<div class="card">🏠 Budowa domu</div>
-<div class="card">🎨 Malowanie</div>
-<div class="card">🪚 Regipsy</div>
-<div class="card">⚡ Elektryka</div>
-<div class="card">🚰 Hydraulika</div>
-<div class="card">🏡 Ocieplenia</div>
-<div class="card">🛁 Łazienki</div>
-<div class="card">🍳 Kuchnie</div>
-<div class="card">🧱 Kostka brukowa</div>
-<div class="card">🚪 Wykończenia</div>
-<div class="card">🏗️ Dachy</div>
-<div class="card">➕ Inne</div>
-
-</div>
-
-</section>
-
-<section class="section">
-
-<h2 class="section-title">
-Przykładowe przetargi
-</h2>
-
-<div class="grid">
-
-<div class="offer-card">
-
-<div class="badge">
-AKTYWNY
-</div>
-
-<h3>Regipsy 50 m²</h3>
-
-<p>
-Województwo:
-Zachodniopomorskie
-</p>
-
-<p>
-Powiat:
-Gryfiński
-</p>
-
-<p>
-Pozostało:
-26 dni
-</p>
-
-<p>
-Ofert:
-12
-</p>
-
-</div>
-
-<div class="offer-card">
-
-<div class="badge">
-AKTYWNY
-</div>
-
-<h3>Malowanie mieszkania</h3>
-
-<p>
-Województwo:
-Pomorskie
-</p>
-
-<p>
-Powiat:
-Gdańsk
-</p>
-
-<p>
-Pozostało:
-18 dni
-</p>
-
-<p>
-Ofert:
-9
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="section">
-
-<div class="pricing">
-
-<h2>
-Pakiet PRO dla firm
-</h2>
-
-<div class="price">
-49 zł
-</div>
-
-<p>
-miesięcznie
-</p>
-
-<br>
-
-<ul style="list-style:none;">
-<li>✅ Nielimitowany dostęp do przetargów</li>
-<li>✅ Składanie ofert</li>
-<li>✅ Podgląd dokumentacji PDF</li>
-<li>✅ Powiadomienia o nowych inwestycjach</li>
-<li>✅ Dostęp do licytacji</li>
-</ul>
-
-</div>
-
-</section>
-
-<section class="section">
-
-<h2 class="section-title">
-Dlaczego BudujTaniej?
-</h2>
-
-<div class="grid">
-
-<div class="card">
-✅ Dane kontaktowe ukryte do końca przetargu
-</div>
-
-<div class="card">
-✅ Domyślny czas trwania przetargu 30 dni
-</div>
-
-<div class="card">
-✅ Konkurencja cenowa wykonawców
-</div>
-
-<div class="card">
-✅ Projekty PDF i zdjęcia
-</div>
-
-</div>
-
-</section>
-
 <footer>
 
 <h3>BudujTaniej.pl</h3>
@@ -466,13 +196,9 @@ Dlaczego BudujTaniej?
 Platforma przetargów budowlanych i remontowych.
 </p>
 
-<br>
-
-<p>
-© 2026 BudujTaniej.pl
-</p>
-
 </footer>
+
 <script type="module" src="app.js"></script>
+
 </body>
 </html>
