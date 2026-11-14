@@ -15,191 +15,348 @@ import {
 
 console.log("AUTH:", auth);
 
-// ===========================
+// =======================
 // ELEMENTY
-// ===========================
+// =======================
 
 const registerBtn = document.getElementById("registerBtn");
 const loginBtn = document.getElementById("loginBtn");
+
 const status = document.getElementById("status");
 
 const addTenderBtn = document.getElementById("addTenderBtn");
 const tenderStatus = document.getElementById("tenderStatus");
 
-const tendersList =
-document.getElementById("tendersList");
+const addOfferBtn = document.getElementById("addOfferBtn");
+const offerStatus = document.getElementById("offerStatus");
 
+const tendersList = document.getElementById("tendersList");
 const filterWojewodztwo =
 document.getElementById("filterWojewodztwo");
-
-const addOfferBtn =
-document.getElementById("addOfferBtn");
-
-const offerStatus =
-document.getElementById("offerStatus");
 
 const myTenders =
 document.getElementById("myTenders");
 
-// ===========================
+// =======================
 // REJESTRACJA
-// ===========================
+// =======================
 
 if (registerBtn) {
 
-registerBtn.addEventListener(
-"click",
-async () => {
+  registerBtn.addEventListener(
+    "click",
+    async () => {
 
-  const email =
-  document.getElementById("email").value;
+      const email =
+      document.getElementById("email").value;
 
-  const password =
-  document.getElementById("password").value;
+      const password =
+      document.getElementById("password").value;
 
-  const rola =
-  document.getElementById("rola").value;
+      const rola =
+      document.getElementById("rola").value;
 
-  try {
+      try {
 
-    const userCredential =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+        const userCredential =
+        await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
 
-    await setDoc(
-      doc(
-        db,
-        "users",
-        userCredential.user.uid
-      ),
-      {
-        email: email,
-        rola: rola,
-        createdAt:
-        new Date().toISOString()
+        await setDoc(
+          doc(
+            db,
+            "users",
+            userCredential.user.uid
+          ),
+          {
+            email: email,
+            rola: rola,
+            createdAt:
+            new Date().toISOString()
+          }
+        );
+
+        status.innerHTML =
+        "✅ Konto utworzone";
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.innerHTML =
+        error.message;
+
       }
-    );
 
-    status.innerHTML =
-      "✅ Konto utworzone";
-
-    console.log(
-      "USER ZAPISANY",
-      userCredential.user.uid
-    );
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    status.innerHTML =
-      error.message;
-
-  }
-
-});
+    }
+  );
 
 }
 
-// ===========================
+// =======================
 // LOGOWANIE
-// ===========================
+// =======================
 
 if (loginBtn) {
 
-loginBtn.addEventListener(
-"click",
-async () => {
+  loginBtn.addEventListener(
+    "click",
+    async () => {
 
-  const email =
-  document.getElementById("email").value;
+      const email =
+      document.getElementById("email").value;
 
-  const password =
-  document.getElementById("password").value;
+      const password =
+      document.getElementById("password").value;
 
-  try {
+      try {
 
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
 
-    status.innerHTML =
-      "✅ Zalogowano";
+        status.innerHTML =
+        "✅ Zalogowano";
 
-    loadMyTenders();
+        loadMyTenders();
 
-  }
-  catch(error){
+      } catch (error) {
 
-    console.error(error);
+        console.error(error);
 
-    status.innerHTML =
-      error.message;
+        status.innerHTML =
+        error.message;
 
-  }
+      }
 
-});
+    }
+  );
 
 }
 
-// ===========================
-// DODAJ PRZETARG
-// ===========================
+// =======================
+// DODAWANIE PRZETARGÓW
+// =======================
 
-if(addTenderBtn){
+if (addTenderBtn) {
 
-addTenderBtn.addEventListener(
-"click",
-async () => {
+  addTenderBtn.addEventListener(
+    "click",
+    async () => {
 
-  if(!auth.currentUser){
+      if (!auth.currentUser) {
 
-    tenderStatus.innerHTML =
-    "Najpierw się zaloguj";
+        tenderStatus.innerHTML =
+        "Najpierw się zaloguj";
 
-    return;
-  }
+        return;
+      }
 
-  const kategoria =
-  document.getElementById("kategoria").value;
+      const kategoria =
+      document.getElementById("kategoria").value;
 
-  const wojewodztwo =
-  document.getElementById("wojewodztwo").value;
+      const wojewodztwo =
+      document.getElementById("wojewodztwo").value;
 
-  const powiat =
-  document.getElementById("powiat").value;
+      const powiat =
+      document.getElementById("powiat").value;
 
-  const budzet =
-  document.getElementById("budzet").value;
+      const budzet =
+      document.getElementById("budzet").value;
 
-  const termin =
-  document.getElementById("termin").value;
+      const termin =
+      document.getElementById("termin").value;
 
-  const opis =
-  document.getElementById("opis").value;
+      const opis =
+      document.getElementById("opis").value;
 
-  try {
+      try {
 
-    await addDoc(
-      collection(db,"tenders"),
-      {
-        ownerUid:
-        auth.currentUser.uid,
+        await addDoc(
+          collection(db, "tenders"),
+          {
+            ownerUid:
+            auth.currentUser.uid,
 
-        ownerEmail:
-        auth.currentUser.email,
+            ownerEmail:
+            auth.currentUser.email,
 
-        kategoria:
-        kategoria,
+            kategoria,
+            wojewodztwo,
+            powiat,
 
-        wojewodztwo:
-        wojewodztwo,
+            budzet:
+            Number(budzet),
 
-        powiat:
-     
+            termin,
+            opis,
+
+            status:
+            "aktywny",
+
+            createdAt:
+            new Date().toISOString()
+          }
+        );
+
+        tenderStatus.innerHTML =
+        "✅ Przetarg dodany";
+
+        loadTenders();
+        loadMyTenders();
+
+      } catch (error) {
+
+        console.error(error);
+
+        tenderStatus.innerHTML =
+        error.message;
+
+      }
+
+    }
+  );
+
+}
+
+// =======================
+// DODAWANIE OFERT
+// =======================
+
+if (addOfferBtn) {
+
+  addOfferBtn.addEventListener(
+    "click",
+    async () => {
+
+      const tenderId =
+      document.getElementById(
+        "offerTenderId"
+      ).value;
+
+      const cena =
+      document.getElementById(
+        "offerPrice"
+      ).value;
+
+      const termin =
+      document.getElementById(
+        "offerTermin"
+      ).value;
+
+      const opis =
+      document.getElementById(
+        "offerOpis"
+      ).value;
+
+      try {
+
+        await addDoc(
+          collection(db, "offers"),
+          {
+            tenderId,
+
+            cena:
+            Number(cena),
+
+            termin,
+            opis,
+
+            createdAt:
+            new Date().toISOString()
+          }
+        );
+
+        offerStatus.innerHTML =
+        "✅ Oferta zapisana";
+
+      } catch (error) {
+
+        console.error(error);
+
+        offerStatus.innerHTML =
+        error.message;
+
+      }
+
+    }
+  );
+
+}
+
+// =======================
+// LISTA PRZETARGÓW
+// =======================
+
+async function loadTenders() {
+
+  if (!tendersList) return;
+
+  tendersList.innerHTML = "";
+
+  const snapshot =
+  await getDocs(
+    collection(
+      db,
+      "tenders"
+    )
+  );
+
+  snapshot.forEach((item) => {
+
+    const tender =
+    item.data();
+
+    if (
+      filterWojewodztwo &&
+      filterWojewodztwo.value &&
+      tender.wojewodztwo !==
+      filterWojewodztwo.value
+    ) {
+      return;
+    }
+
+    const card =
+    document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${tender.kategoria}</h3>
+
+      <p>Województwo: ${tender.wojewodztwo}</p>
+
+      <p>Powiat: ${tender.powiat}</p>
+
+      <p>Budżet: ${tender.budzet} zł</p>
+
+      <p>Status: ${tender.status}</p>
+
+      <p>ID: ${item.id}</p>
+    `;
+
+    tendersList.appendChild(card);
+
+  });
+
+}
+
+// =======================
+// PANEL INWESTORA
+// =======================
+
+async function loadMyTenders() {
+
+  if (!auth.currentUser) return;
+  if (!myTenders) return;
+
+  myTenders.innerHTML = "";
+
+  const tendersSnapshot =
+  await getDocs(
+    collection(
