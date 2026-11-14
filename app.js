@@ -15,9 +15,9 @@ import {
 
 console.log("AUTH:", auth);
 
-// ====================
-// LOGOWANIE / KONTO
-// ====================
+// =====================
+// KONTO
+// =====================
 
 const registerBtn =
 document.getElementById("registerBtn");
@@ -28,9 +28,9 @@ document.getElementById("loginBtn");
 const status =
 document.getElementById("status");
 
-// ====================
+// =====================
 // PRZETARGI
-// ====================
+// =====================
 
 const addTenderBtn =
 document.getElementById("addTenderBtn");
@@ -44,11 +44,25 @@ document.getElementById("tendersList");
 const filterWojewodztwo =
 document.getElementById("filterWojewodztwo");
 
-// ====================
-// REJESTRACJA
-// ====================
+// =====================
+// OFERTY
+// =====================
 
-registerBtn.addEventListener("click", async () => {
+const addOfferBtn =
+document.getElementById("addOfferBtn");
+
+const offerStatus =
+document.getElementById("offerStatus");
+
+// =====================
+// REJESTRACJA
+// =====================
+
+if(registerBtn){
+
+registerBtn.addEventListener(
+"click",
+async () => {
 
   const email =
   document.getElementById("email").value;
@@ -62,11 +76,11 @@ registerBtn.addEventListener("click", async () => {
   try {
 
     const userCredential =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
     await setDoc(
       doc(
@@ -77,7 +91,8 @@ registerBtn.addEventListener("click", async () => {
       {
         email: email,
         rola: rola,
-        createdAt: new Date().toISOString()
+        createdAt:
+        new Date().toISOString()
       }
     );
 
@@ -101,11 +116,17 @@ registerBtn.addEventListener("click", async () => {
 
 });
 
-// ====================
-// LOGOWANIE
-// ====================
+}
 
-loginBtn.addEventListener("click", async () => {
+// =====================
+// LOGOWANIE
+// =====================
+
+if(loginBtn){
+
+loginBtn.addEventListener(
+"click",
+async () => {
 
   const email =
   document.getElementById("email").value;
@@ -136,9 +157,11 @@ loginBtn.addEventListener("click", async () => {
 
 });
 
-// ====================
-// DODANIE PRZETARGU
-// ====================
+}
+
+// =====================
+// DODAWANIE PRZETARGU
+// =====================
 
 if(addTenderBtn){
 
@@ -188,10 +211,6 @@ async () => {
     tenderStatus.innerHTML =
     "✅ Przetarg dodany";
 
-    console.log(
-      "PRZETARG DODANY"
-    );
-
     loadTenders();
 
   }
@@ -208,11 +227,11 @@ async () => {
 
 }
 
-// ====================
+// =====================
 // LISTA PRZETARGÓW
-// ====================
+// =====================
 
-async function loadTenders() {
+async function loadTenders(){
 
   if(!tendersList) return;
 
@@ -220,13 +239,16 @@ async function loadTenders() {
 
   const snapshot =
   await getDocs(
-    collection(db, "tenders")
+    collection(db,"tenders")
   );
 
   snapshot.forEach((item) => {
 
     const tender =
     item.data();
+
+    const tenderId =
+    item.id;
 
     if(
       filterWojewodztwo &&
@@ -243,6 +265,7 @@ async function loadTenders() {
     card.className = "card";
 
     card.innerHTML = `
+
       <h3>${tender.kategoria}</h3>
 
       <p>
@@ -273,6 +296,12 @@ async function loadTenders() {
       Status:
       ${tender.status}
       </p>
+
+      <p>
+      ID:
+      ${tenderId}
+      </p>
+
     `;
 
     tendersList.appendChild(card);
@@ -281,9 +310,9 @@ async function loadTenders() {
 
 }
 
-// ====================
+// =====================
 // FILTR WOJEWÓDZTW
-// ====================
+// =====================
 
 if(filterWojewodztwo){
 
@@ -294,8 +323,69 @@ filterWojewodztwo.addEventListener(
 
 }
 
-// ====================
+// =====================
+// DODAWANIE OFERTY
+// =====================
+
+if(addOfferBtn){
+
+addOfferBtn.addEventListener(
+"click",
+async () => {
+
+  const tenderId =
+  document.getElementById(
+    "offerTenderId"
+  ).value;
+
+  const cena =
+  document.getElementById(
+    "offerPrice"
+  ).value;
+
+  const termin =
+  document.getElementById(
+    "offerTermin"
+  ).value;
+
+  const opis =
+  document.getElementById(
+    "offerOpis"
+  ).value;
+
+  try {
+
+    await addDoc(
+      collection(db,"offers"),
+      {
+        tenderId: tenderId,
+        cena: Number(cena),
+        termin: termin,
+        opis: opis,
+        createdAt:
+        new Date().toISOString()
+      }
+    );
+
+    offerStatus.innerHTML =
+    "✅ Oferta zapisana";
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    offerStatus.innerHTML =
+    error.message;
+
+  }
+
+});
+
+}
+
+// =====================
 // START
-// ====================
+// =====================
 
 loadTenders();
