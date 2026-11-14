@@ -1,4 +1,4 @@
-import { auth } from "./firebase.js";
+import { auth, db, doc, setDoc } from "./firebase.js";
 console.log("AUTH:", auth);
 import {
 createUserWithEmailAndPassword,
