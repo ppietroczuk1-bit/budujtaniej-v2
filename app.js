@@ -34,13 +34,15 @@ await setDoc(
     createdAt: new Date().toISOString()
   }
 );
-
+console.log("USER ZAPISANY W FIRESTORE");
 status.innerHTML = "✅ Konto utworzone";
 
 }
 catch(error){
 
+console.error(error);
 status.innerHTML = error.message;
+
 
 }
 
