@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -21,12 +22,12 @@
 </div>
 
 <div class="menu">
+
 <a href="#">Jak działa</a>
 <a href="#">Przetargi</a>
 <a href="#">Dla wykonawców</a>
 <a href="#">Cennik</a>
-<a href="#">Logowanie</a>
-<a href="#">Rejestracja</a>
+
 </div>
 
 </nav>
@@ -40,24 +41,23 @@ Znajdź najlepszą firmę budowlaną
 </h1>
 
 <p>
-Dodaj przetarg za darmo, zbieraj oferty przez 30 dni
+
+Dodaj przetarg za darmo,
+zbieraj oferty przez 30 dni
 i wybierz najlepszą firmę.
+
 </p>
 
-<a href="#" class="btn btn-primary">
-➕ Dodaj przetarg
-</a>
-
-<a href="#" class="btn btn-secondary">
-📋 Zobacz przetargi
-</a>
-
 </section>
+
+<!-- REJESTRACJA -->
 
 <section class="section">
 
 <h2 class="section-title">
-Załóż konto
+
+Rejestracja / Logowanie
+
 </h2>
 
 <div class="card">
@@ -73,9 +73,18 @@ id="password"
 placeholder="Hasło">
 
 <select id="rola">
-<option value="inwestor">Inwestor</option>
-<option value="wykonawca">Wykonawca</option>
+
+<option value="inwestor">
+Inwestor
+</option>
+
+<option value="wykonawca">
+Wykonawca
+</option>
+
 </select>
+
+<br><br>
 
 <button
 class="btn"
@@ -99,10 +108,14 @@ Zaloguj się
 
 </section>
 
+<!-- DODAJ PRZETARG -->
+
 <section class="section">
 
 <h2 class="section-title">
+
 Dodaj przetarg
+
 </h2>
 
 <div class="card">
@@ -112,10 +125,30 @@ type="text"
 id="kategoria"
 placeholder="Kategoria prac">
 
-<input
-type="text"
-id="wojewodztwo"
-placeholder="Województwo">
+<select id="wojewodztwo">
+
+<option value="">
+Wybierz województwo
+</option>
+
+<option>Dolnośląskie</option>
+<option>Kujawsko-Pomorskie</option>
+<option>Lubelskie</option>
+<option>Lubuskie</option>
+<option>Łódzkie</option>
+<option>Małopolskie</option>
+<option>Mazowieckie</option>
+<option>Opolskie</option>
+<option>Podkarpackie</option>
+<option>Podlaskie</option>
+<option>Pomorskie</option>
+<option>Śląskie</option>
+<option>Świętokrzyskie</option>
+<option>Warmińsko-Mazurskie</option>
+<option>Wielkopolskie</option>
+<option>Zachodniopomorskie</option>
+
+</select>
 
 <input
 type="text"
@@ -133,8 +166,7 @@ id="termin">
 
 <textarea
 id="opis"
-placeholder="Opis prac"
-style="width:100%;height:120px;"></textarea>
+placeholder="Opis przetargu"></textarea>
 
 <br><br>
 
@@ -152,53 +184,126 @@ Dodaj przetarg
 
 </section>
 
+<!-- FILTR -->
+
 <section class="section">
 
 <h2 class="section-title">
-Jak działa BudujTaniej?
+
+Przetargi
+
 </h2>
 
-<div class="steps">
+<select id="filterWojewodztwo">
 
-<div class="step">
-<div class="step-number">1</div>
-<h3>Dodaj przetarg</h3>
-<p>
-Dodaj opis, zdjęcia i dokumentację.
-</p>
-</div>
+<option value="">
+Wszystkie województwa
+</option>
 
-<div class="step">
-<div class="step-number">2</div>
-<h3>Zbieraj oferty</h3>
-<p>
-Firmy konkurują ceną przez 30 dni.
-</p>
-</div>
+<option>Dolnośląskie</option>
+<option>Kujawsko-Pomorskie</option>
+<option>Lubelskie</option>
+<option>Lubuskie</option>
+<option>Łódzkie</option>
+<option>Małopolskie</option>
+<option>Mazowieckie</option>
+<option>Opolskie</option>
+<option>Podkarpackie</option>
+<option>Podlaskie</option>
+<option>Pomorskie</option>
+<option>Śląskie</option>
+<option>Świętokrzyskie</option>
+<option>Warmińsko-Mazurskie</option>
+<option>Wielkopolskie</option>
+<option>Zachodniopomorskie</option>
 
-<div class="step">
-<div class="step-number">3</div>
-<h3>Wybierz wykonawcę</h3>
-<p>
-Po zakończeniu przetargu wybierasz najlepszą ofertę.
-</p>
-</div>
+</select>
+
+<br><br>
+
+<div id="tendersList"></div>
+
+</section>
+
+<!-- OFERTA -->
+
+<section class="section">
+
+<h2 class="section-title">
+
+Złóż ofertę
+
+</h2>
+
+<div class="card">
+
+<input
+type="text"
+id="offerTenderId"
+placeholder="ID przetargu">
+
+<input
+type="number"
+id="offerPrice"
+placeholder="Cena">
+
+<input
+type="text"
+id="offerTermin"
+placeholder="Termin realizacji">
+
+<textarea
+id="offerOpis"
+placeholder="Opis oferty"></textarea>
+
+<br><br>
+
+<button
+class="btn"
+id="addOfferBtn">
+
+Złóż ofertę
+
+</button>
+
+<p id="offerStatus"></p>
 
 </div>
 
 </section>
 
+<!-- PANEL INWESTORA -->
+
+<section class="section">
+
+<h2 class="section-title">
+
+📊 Panel Inwestora
+
+</h2>
+
+<div id="myTenders"></div>
+
+</section>
+
 <footer>
 
-<h3>BudujTaniej.pl</h3>
+<h3>
+BudujTaniej.pl
+</h3>
 
 <p>
-Platforma przetargów budowlanych i remontowych.
+
+Platforma przetargów budowlanych
+
 </p>
 
 </footer>
 
-<script type="module" src="app.js"></script>
+<script
+type="module"
+src="app.js">
+</script>
 
 </body>
 </html>
